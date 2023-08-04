@@ -1,3 +1,5 @@
+import random
+
 class TreeNode:
     def __init__(self, data):
         self.data = data
@@ -8,8 +10,10 @@ class TreeNode:
         return str(self.data)
 
 class BinaryTree:
-    def __init__(self, data=None):
-        if data:
+    def __init__(self, data=None, node=None):
+        if node:
+            self.root = node
+        elif data:
             node = TreeNode(data)
             self.root = node
         else:
@@ -27,6 +31,17 @@ class BinaryTree:
         if node.right:
             self.simetric_traversal(node.right)
             print(')', end='')
+
+    def inorder_traversal(self, node=None):
+        #percurso em ordem simétrica
+        if node is None:
+            node = self.root
+
+        if node.left:
+            self.inorder_traversal(node.left)
+        print(node, end=' ')
+        if node.right:
+            self.inorder_traversal(node.right)
 
     def postorder_traversal(self, node=None):
         if node is None:
@@ -56,8 +71,66 @@ class BinaryTree:
         return hleft + 1
 
 
-        
+class BinarySearchTree(BinaryTree):
+    def insert(self, value):
+        parent = None
+        x = self.root
+        while(x):
+            parent = x
+            if value < x.data:
+                x = x.left
+            else:
+                x = x.right
+        if parent is None:
+            self.root = TreeNode(value)
+        elif value < parent.data:
+            parent.left = TreeNode(value)
+        else:
+            parent.right = TreeNode(value)
 
+    def search(self, value):
+        return self._search(value, self.root)
+
+    def _search(self, value, node):
+        if node is None:
+            return node
+        if node.data == value:
+            return BinarySearchTree(node)
+        if value < node.data:
+            return self._search(value, node.left)
+        return self._search(value, node.right)
+
+
+
+    """def search(self, value, node=0):
+        if node == 0:
+            node = self.root
+        if node is None or node.data == value:
+            return BinarySearchTree(node)
+        if value < node.data:
+            return self.search(value, node.left)
+        return self.search(node.right)"""
+
+random.seed(77)
+
+values = random.sample(range(1, 100), 42)
+
+bst = BinarySearchTree()
+
+for v in values:
+    bst.insert(v)
+
+items = [1, 3, 54, 12, 67, 1000]
+for i in items:
+    r = bst.search(i)
+    if r is None:
+        print(i, 'não encontrado')
+    else:
+        print(r.root.data, 'encontrado')
+
+#########################################
+
+"""
 tree = BinaryTree()
 
 n1 = TreeNode('I')
@@ -87,7 +160,7 @@ tree.root = n0
 tree.postorder_traversal()
 print()
 print(tree.height())
-
+"""
 #########################################
 
 """tree = BinaryTree()
