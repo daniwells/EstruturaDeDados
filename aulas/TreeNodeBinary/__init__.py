@@ -1,4 +1,7 @@
+from aulas.fila import Queue
 import random
+
+root = 'root'
 
 class TreeNode:
     def __init__(self, data):
@@ -70,6 +73,19 @@ class BinaryTree:
             return hright + 1
         return hleft + 1
 
+    def levelorder_traversal(self, node=root):
+        if node == root:
+            node = self.root
+        queue = Queue()
+        queue.push(node)
+        while len(queue):
+            node = queue.pop()
+            if node.left:
+                queue.push(node.left)
+
+            if node.right:
+                queue.push(node.right)
+            print(node, end=" ")
 
 class BinarySearchTree(BinaryTree):
     def insert(self, value):
@@ -100,17 +116,87 @@ class BinarySearchTree(BinaryTree):
             return self._search(value, node.left)
         return self._search(value, node.right)
 
-
-
-    """def search(self, value, node=0):
-        if node == 0:
+    def min(self, node=root):
+        if node == root:
             node = self.root
-        if node is None or node.data == value:
-            return BinarySearchTree(node)
-        if value < node.data:
-            return self.search(value, node.left)
-        return self.search(node.right)"""
+        while node.left:
+            node = node.left
+        return node.data
 
+    def max(self, node=root):
+        if node == root:
+            node = self.root
+        while node.right:
+            node = node.right
+        return node.data
+
+    def remove(self, value, node=root):
+        if node == root:
+            node = self.root
+
+        if node is None:
+            return node
+
+        if value < node.data:
+            node.left = self.remove(value, node.left)
+        elif value > node.data:
+            node.right = self.remove(value, node.right)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            else:
+                subst = self.min(node.right)
+                node.data = subst
+                node.right = self.remove(subst, node.right)
+
+        return node
+
+list = [34, 56, 32, 76, 877, 12, 4, 0, 90, 45, 491, 65]
+tree = BinarySearchTree()
+
+for e in list:
+    tree.insert(e)
+
+print(tree.max())
+print(tree.min())
+
+tree.inorder_traversal()
+
+tree.remove(90)
+print()
+tree.inorder_traversal()
+############################################
+"""
+vlist = [34, 56, 32, 76, 877, 12, 4, 0, 90, 45, 491, 65]
+
+tree = BinarySearchTree()
+
+for v in vlist:
+    tree.insert(v)
+
+bst = tree
+bst.inorder_traversal()
+print()
+print('-' * 20)
+bst.levelorder_traversal()
+
+"""
+
+############################################
+
+"""def search(self, value, node=0):
+    if node == 0:
+        node = self.root
+    if node is None or node.data == value:
+        return BinarySearchTree(node)
+    if value < node.data:
+        return self.search(value, node.left)
+    return self.search(node.right)"""
+
+#############################################
+"""
 random.seed(77)
 
 values = random.sample(range(1, 100), 42)
@@ -127,6 +213,7 @@ for i in items:
         print(i, 'não encontrado')
     else:
         print(r.root.data, 'encontrado')
+"""
 
 #########################################
 
