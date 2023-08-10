@@ -25,8 +25,11 @@ class Takeoff_Queue:
         if self.first is None:
             raise IndexError('The list is empty!')
         else:
+            c = self.first
             self.first = self.first.next
             self._size -= 1
+            return c.data
+
 
     def repr_c(self):
         print('The first plane characteristics ->', end=' ')
@@ -49,7 +52,7 @@ class Takeoff_Queue:
 
     def __str__(self):
         return self.__repr__()
-
+"""
 av1 = {'name':'Antonov An-124 Ruslan.', 'caracteristicas':{'cor':'azul', 'tamanho':'médio', 'velocidade':'rápido'}}
 av2 = {'name':'Boeing 747-8 Freighter.', 'caracteristicas':{'cor':'vermelho', 'tamanho':'médio', 'velocidade':'rápido'}}
 av3 = {'name':'Boeing 777-8 Freighter.', 'caracteristicas':{'cor':'amarelo', 'tamanho':'grande', 'velocidade':'lento'}}
@@ -70,3 +73,4 @@ print('\n')
 
 planes.dequeue()
 print(planes.__repr__())
+"""
